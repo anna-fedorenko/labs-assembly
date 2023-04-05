@@ -1,11 +1,11 @@
-.686 ; директива визначення типу мікропроцесора
-.model flat, stdcall ; задання лінійної моделі пам’яті і згода OC Windows
-option casemap:none ; відмінність малих та великих букв
-include C:\masm32\include\windows.inc  ; бібліотеки, що підключаються
+.686                                    ; директива визначення типу мікропроцесора
+.model flat, stdcall                    ; задання лінійної моделі пам’яті і згода OC Windows
+option casemap:none                     ; відмінність малих та великих букв
+include C:\masm32\include\windows.inc   ; бібліотеки, що підключаються
 include C:\masm32\include\kernel32.inc 
-include C:\masm32\include\user32.inc   ; файли інтерфейса
+include C:\masm32\include\user32.inc    ; файли інтерфейса
 include C:\masm32\include\fpu.inc
-includelib C:\masm32\lib\kernel32.lib   ;підключення бібліотек
+includelib C:\masm32\lib\kernel32.lib   ; підключення бібліотек
 includelib C:\masm32\lib\user32.lib
 includelib C:\masm32\lib\fpu.lib
 
