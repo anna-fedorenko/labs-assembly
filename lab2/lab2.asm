@@ -22,45 +22,45 @@ includelib \masm32\lib\user32.lib
 includelib \masm32\lib\kernel32.lib
 
 .data	                                                             ; директива визначення даних
-_temp1 dd ?,0
-_temp2 dd ?,0
-_temp3 dd ?,0
-_temp4 dd ?,0
-_const1 dd 3
-_const2 dd 2
-_const3 dd 7
-_title db "Лабораторна робота №2. операції порівнняння",0
-strbuf dw ?,0
+_temp1 dd ?,0                                                        ;резервуємо місце в пам'яті для змінної _temp1 (double word)
+_temp2 dd ?,0                                                        ;резервуємо місце в пам'яті для змінної _temp2 (double word)
+_temp3 dd ?,0                                                        ;резервуємо місце в пам'яті для змінної _temp3 (double word)
+_temp4 dd ?,0                                                        ;резервуємо місце в пам'яті для змінної _temp4 (double word)
+_const1 dd 3                                                         ;оголошуємо змінну _const1 типу dd, присвоюємо значення 3
+_const2 dd 2                                                         ;оголошуємо змінну _const2 типу dd, присвоюємо значення 2
+_const3 dd 7                                                         ;оголошуємо змінну _const7 типу dd, присвоюємо значення 7
+_title db "Лабораторна робота №2. операції порівнняння",0            ;задаємо рядок з назвою програми
+strbuf dw ?,0                                                        ;резервуємо місце в пам'яті для буфера рядків (dw - double word)
 _text db "masm32.  Вивід результата через MessageBox:",0ah,
 "y=e/3c+ac a<c",0ah,
 "y=2a/7-c/7e a>=c",0ah,
 "Результат: %d — ціла частина",0ah, 0ah,
-"СТУДЕНТКА КНЕУ ІІТЕ",0
-MsgBoxCaption   db "Приклад вікна повідомлення",0
-MsgBoxText_1     db "порівнняння  _a<_c",0
-MsgBoxText_2     db "порівнняння  _a>=_c",0
+"СТУДЕНТКА КНЕУ ІІТЕ",0                                              ;задаємо рядок з текстом, який буде виводитись на екран
+MsgBoxCaption   db "Приклад вікна повідомлення",0                    ;масив символів, що містить заголовок вікна повідомлення
+MsgBoxText_1     db "порівнняння  _a<_c",0                           ;масив символів, що містять текст, який буде виводитися у вікні повідомлення про результати порівняння змінних
+MsgBoxText_2     db "порівнняння  _a>=_c",0                          ;масив символів, що містять текст, який буде виводитися у вікні повідомлення про результати порівняння змінних
 
-.const
-NULL          equ  0
-MB_OK       equ  0
+.const                                                               ;початок розділу констант
+NULL          equ  0                                                 ;ім'я константи, яка дорівнює 0
+MB_OK       equ  0                                                   ;директива асемблера, яка встановлює значення константи
 
 .code	                                                            ; директива початку сегмента команд
 _start:                                                     	    ; мітка початку програми з ім’ям _start
 
-main proc
-LOCAL _e: DWORD
-LOCAL _a: DWORD
-LOCAL _c: DWORD
+main proc                                                           ;початок процедури main
+LOCAL _e: DWORD                                                     ;локальна зміннf _e, яка має тип DWORD
+LOCAL _a: DWORD                                                     ;локальна зміннf _a, яка має тип DWORD
+LOCAL _c: DWORD                                                     ;локальна зміннf _c, яка має тип DWORD
 
-mov _e, sval(input("vvedit e = "))
-mov _a, sval(input("vvedit a = "))
-mov _c, sval(input("vvedit c = "))
+mov _e, sval(input("vvedit e = "))                                  ;інструкції зчитують введені значення для змінної _e  та зберігають їх у пам'яті
+mov _a, sval(input("vvedit a = "))                                  ;інструкції зчитують введені значення для змінної _a  та зберігають їх у пам'яті
+mov _c, sval(input("vvedit c = "))                                  ;інструкції зчитують введені значення для змінної _c  та зберігають їх у пам'яті
 
 mov ebx, _a                                                        ; переносимо _a в регістр ebx
 mov eax, _c                                                        ; переносимо _c в регістр eax.
 sub ebx, eax                                                       ; порівняння  _a>=_c
 
-jge zero
+jge zero                                                           ;безумовний перехід до мітки "zero"
 
 ; zero                                                             ;здійснюємо перехід на мітку zero,якщо прапор SF встановлений. якщо ні, то виконання продовжиться далі
 ;y= e/3c+ac a<c
@@ -80,7 +80,7 @@ invoke MessageBox, NULL, addr strbuf, addr _title, MB_ICONINFORMATION
 invoke ExitProcess, 0
 
 jmp lexit                                                         ;переходимо на мітку exit (GOTO exit)
-zero:
+zero:                                                             ;мітка zero
 ;2a/7-c/7e a>=c
 mov eax, _const2                                                  ;переносимо значення _const2 в регістр eax
 mul _a                                                            ;множимо _const2 на значення _а
@@ -94,13 +94,13 @@ div _temp4                                                        ;Ділимо eax на
 sub _temp3, eax                                                   ;віднімаємо значення eax від _temp3, результат в _temp3 
 
 
-INVOKE    MessageBoxA, NULL, ADDR MsgBoxText_2, ADDR MsgBoxCaption, MB_OK
-invoke wsprintf, ADDR strbuf, ADDR _text, _temp3, _temp4 
-invoke MessageBox, NULL, addr strbuf, addr _title, MB_ICONINFORMATION
-invoke ExitProcess, 0
+INVOKE    MessageBoxA, NULL, ADDR MsgBoxText_2, ADDR MsgBoxCaption, MB_OK   ;виклик вікна повідомлення з текстом
+invoke wsprintf, ADDR strbuf, ADDR _text, _temp3, _temp4                    ;форматування рядка за допомогою wsprintf і збереження результату у strbuf
+invoke MessageBox, NULL, addr strbuf, addr _title, MB_ICONINFORMATION       ;виклик MessageBox з відформатованим рядком і заголовком _title, та іконкою інформації
+invoke ExitProcess, 0                                                       ;завершення процесу
 
-lexit:
-ret
-main endp
-ret                                                                 ; повернення управління ОС
-end _start                                                          ; закінчення програми з ім’ям _start
+lexit:                                                              ;мітка lexit
+ret                                                                 ;повернення управління ОС
+main endp                                                           ;завершення роботи і передача управління наступній інструкції
+ret                                                                 ;повернення управління ОС
+end _start                                                          ;закінчення програми з ім’ям _start
